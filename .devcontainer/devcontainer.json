@@ -1,0 +1,37 @@
+{
+    "name": "Deeplex | C++",
+    "image": "ghcr.io/deeplex/devcontainer-cpp:ubuntu-24.04",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // general editor utility
+                "EditorConfig.EditorConfig",
+                // GitHub integration
+                "github.vscode-github-actions",
+                "GitHub.vscode-pull-request-github",
+                // C++
+                "llvm-vs-code-extensions.vscode-clangd",
+                "ms-vscode.cmake-tools",
+                // sphinx
+                "lextudio.restructuredtext",
+                "ms-python.python",
+                "trond-snekvik.simple-rst",
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": true,
+            "installOhMyZsh": true,
+            "installOhMyZshConfig": true,
+            "upgradePackages": true,
+            "username": "vscode"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "os-provided",
+            "installTools": true,
+            "toolsToInstall": "copier,pipenv"
+        }
+    },
+    "postCreateCommand": "cd ${containerWorkspaceFolder}/docs && pipenv sync --dev",
+}

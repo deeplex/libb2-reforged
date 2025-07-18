@@ -1,0 +1,21 @@
+
+// Copyright 2025 Henrik Steffen Gaßmann
+//
+// Distributed under the Boost Software License, Version 1.0.
+//         (See accompanying file LICENSE or copy at
+//           https://www.boost.org/LICENSE_1_0.txt)
+
+#pragma once
+
+// NOLINTBEGIN(modernize-macro-to-enum)
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+// NOLINTBEGIN(cppcoreguidelines-macro-to-enum)
+
+// #cmakedefine01
+
+#cmakedefine01 DPLX_BLAKE2_DISABLE_WORKAROUNDS
+#cmakedefine01 DPLX_BLAKE2_FLAG_OUTDATED_WORKAROUNDS
+
+// NOLINTEND(cppcoreguidelines-macro-to-enum)
+// NOLINTEND(cppcoreguidelines-macro-usage)
+// NOLINTEND(modernize-macro-to-enum)

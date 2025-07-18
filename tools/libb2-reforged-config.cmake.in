@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/libb2-reforged-targets.cmake")
+
+check_required_components(libb2-reforged)

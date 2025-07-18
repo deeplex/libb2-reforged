@@ -1,0 +1,23 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg-configuration.schema.json",
+    "default-registry": {
+        "kind": "builtin",
+        "baseline": "ce613c41372b23b1f51333815feb3edd87ef8a8b"
+    },
+    "overlay-triplets": [
+        "tools/triplets"
+    ],
+    "registries": [
+        {
+            "kind": "git",
+            "repository": "https://github.com/deeplex/vcpkg-registry",
+            "baseline": "90373c127f67e25393120e7332270aa1a27d54f8",
+            "packages": [
+                "concrete"
+            ]
+        }
+    ],
+    "overlay-ports": [
+        "tools/ports"
+    ]
+}

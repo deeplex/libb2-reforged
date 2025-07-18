@@ -1,0 +1,12 @@
+# Changes here will be overwritten by Copier
+_commit: v0.4.1a2
+_src_path: https://github.com/deeplex/copier-cpp.git
+email: henrik@gassmann.onl
+full_name: Henrik Steffen Gaßmann
+header_config: true
+header_only: false
+namespace: blake2
+project_name: libb2 Reforged
+project_slug: libb2-reforged
+workaround_header: true
+year: '2025'
