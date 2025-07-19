@@ -53,7 +53,7 @@
   row3 = vextq_u32(row3, row3, 2); \
   row4 = vextq_u32(row4, row4, 1);
 
-#include "blake2s-load-neon.h"
+#include "blake2s-neon-load.h"
 
 #define ROUND(r) \
   LOAD_MSG_ ##r ##_1(buf1); \
@@ -66,5 +66,5 @@
   LOAD_MSG_ ##r ##_4(buf4); \
   G2(row1, row2, row3, row4, buf4); \
   UNDIAGONALIZE(row1, row2, row3, row4);
-    
+
 #endif

@@ -21,7 +21,7 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
-#include "blake2s-round.h"
+#include "blake2s-neon-round.h"
 
 static const uint32_t blake2s_IV[8] =
 {
@@ -136,7 +136,7 @@ int blake2s_init_key( blake2s_state *S, size_t outlen, const void *key, size_t k
 }
 
 
-static void blake2s_compress( blake2s_state *S, 
+static void blake2s_compress( blake2s_state *S,
 		              const uint8_t in[BLAKE2S_BLOCKBYTES] )
 {
   uint32x4_t row1, row2, row3, row4;
@@ -145,14 +145,14 @@ static void blake2s_compress( blake2s_state *S,
   const uint32x4_t h1234 = row1 = vld1q_u32(&S->h[0]);
   const uint32x4_t h5678 = row2 = vld1q_u32(&S->h[4]);
 
-  const uint32x2_t m0 = vreinterpret_u32_u8(vld1_u8(&in[ 0])); 
-  const uint32x2_t m1 = vreinterpret_u32_u8(vld1_u8(&in[ 8])); 
-  const uint32x2_t m2 = vreinterpret_u32_u8(vld1_u8(&in[16])); 
-  const uint32x2_t m3 = vreinterpret_u32_u8(vld1_u8(&in[24])); 
-  const uint32x2_t m4 = vreinterpret_u32_u8(vld1_u8(&in[32])); 
-  const uint32x2_t m5 = vreinterpret_u32_u8(vld1_u8(&in[40])); 
-  const uint32x2_t m6 = vreinterpret_u32_u8(vld1_u8(&in[48])); 
-  const uint32x2_t m7 = vreinterpret_u32_u8(vld1_u8(&in[56])); 
+  const uint32x2_t m0 = vreinterpret_u32_u8(vld1_u8(&in[ 0]));
+  const uint32x2_t m1 = vreinterpret_u32_u8(vld1_u8(&in[ 8]));
+  const uint32x2_t m2 = vreinterpret_u32_u8(vld1_u8(&in[16]));
+  const uint32x2_t m3 = vreinterpret_u32_u8(vld1_u8(&in[24]));
+  const uint32x2_t m4 = vreinterpret_u32_u8(vld1_u8(&in[32]));
+  const uint32x2_t m5 = vreinterpret_u32_u8(vld1_u8(&in[40]));
+  const uint32x2_t m6 = vreinterpret_u32_u8(vld1_u8(&in[48]));
+  const uint32x2_t m7 = vreinterpret_u32_u8(vld1_u8(&in[56]));
 
   row3 = vld1q_u32(&blake2s_IV[0]);
 

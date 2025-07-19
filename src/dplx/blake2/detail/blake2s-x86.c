@@ -20,7 +20,7 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
-#include "blake2-config.h"
+#include "blake2-x86-config.h"
 
 
 #include <emmintrin.h>
@@ -37,7 +37,7 @@
 #include <x86intrin.h>
 #endif
 
-#include "blake2s-round.h"
+#include "blake2s-x86-round.h"
 
 static const uint32_t blake2s_IV[8] =
 {

@@ -65,12 +65,10 @@
   row4 = _mm_shuffle_epi32( row4, _MM_SHUFFLE(1,0,3,2) ); \
   row3 = _mm_shuffle_epi32( row3, _MM_SHUFFLE(2,1,0,3) );
 
-#if defined(HAVE_XOP)
-#include "blake2s-load-xop.h"
-#elif defined(HAVE_SSE41)
-#include "blake2s-load-sse41.h"
+#if defined(HAVE_SSE41)
+#include "blake2s-sse41-load.h"
 #else
-#include "blake2s-load-sse2.h"
+#include "blake2s-sse2-load.h"
 #endif
 
 #define ROUND(r)  \

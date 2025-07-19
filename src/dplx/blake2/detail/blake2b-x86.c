@@ -20,7 +20,7 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
-#include "blake2-config.h"
+#include "blake2-x86-config.h"
 
 #ifdef _MSC_VER
 #include <intrin.h> /* for _mm_set_epi64x */
@@ -39,7 +39,7 @@
 #include <x86intrin.h>
 #endif
 
-#include "blake2b-round.h"
+#include "blake2b-x86-round.h"
 
 static const uint64_t blake2b_IV[8] =
 {

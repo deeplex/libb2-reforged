@@ -59,7 +59,7 @@
     t0 = vextq_u64(row4l, row4h, 1); t1 = vextq_u64(row4h, row4l, 1); \
     row4l = t0; row4h = t1;
 
-#include "blake2b-load-neon.h"
+#include "blake2b-neon-load.h"
 
 #define ROUND(r) \
   LOAD_MSG_ ##r ##_1(b0, b1); \
