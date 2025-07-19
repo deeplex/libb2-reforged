@@ -20,11 +20,7 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
-static const uint32_t blake2s_IV[8] =
-{
-  0x6A09E667UL, 0xBB67AE85UL, 0x3C6EF372UL, 0xA54FF53AUL,
-  0x510E527FUL, 0x9B05688CUL, 0x1F83D9ABUL, 0x5BE0CD19UL
-};
+#include "blake2s-common.c.inc"
 
 static const uint8_t blake2s_sigma[10][16] =
 {
@@ -39,38 +35,6 @@ static const uint8_t blake2s_sigma[10][16] =
   {  6, 15, 14,  9, 11,  3,  0,  8, 12,  2, 13,  7,  1,  4, 10,  5 } ,
   { 10,  2,  8,  4,  7,  6,  1,  5, 15, 11,  9, 14,  3, 12, 13 , 0 } ,
 };
-
-static void blake2s_set_lastnode( blake2s_state *S )
-{
-  S->f[1] = (uint32_t)-1;
-}
-
-/* Some helper functions, not necessarily useful */
-static int blake2s_is_lastblock( const blake2s_state *S )
-{
-  return S->f[0] != 0;
-}
-
-static void blake2s_set_lastblock( blake2s_state *S )
-{
-  if( S->last_node ) blake2s_set_lastnode( S );
-
-  S->f[0] = (uint32_t)-1;
-}
-
-static void blake2s_increment_counter( blake2s_state *S, const uint32_t inc )
-{
-  S->t[0] += inc;
-  S->t[1] += ( S->t[0] < inc );
-}
-
-static void blake2s_init0( blake2s_state *S )
-{
-  size_t i;
-  memset( S, 0, sizeof( blake2s_state ) );
-
-  for( i = 0; i < 8; ++i ) S->h[i] = blake2s_IV[i];
-}
 
 /* init2 xors IV with input parameter block */
 int blake2s_init_param( blake2s_state *S, const blake2s_param *P )
