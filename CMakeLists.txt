@@ -17,14 +17,14 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/tools/cmake/")
 # configure vcpkg from environment vars if possible
 include(VcpkgDefaults)
 
-if (BUILD_TESTING OR NOT DEFINED BUILD_TESTING)
+if (BUILD_TESTING)
     list(APPEND VCPKG_MANIFEST_FEATURES "tests")
 endif()
 
 ########################################################################
 project(libb2-reforged
     VERSION 0.0.0.0
-    LANGUAGES CXX
+    LANGUAGES C
 )
 
 include(EnforceOutOfSourceBuilds)
@@ -37,6 +37,7 @@ include(SourceHelpers)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 if (BUILD_TESTING)
+    enable_language(CXX)
     enable_testing()
 endif()
 
@@ -47,6 +48,90 @@ endif()
 option(DPLX_BLAKE2_DISABLE_WORKAROUNDS "Disable all workarounds" OFF)
 option(DPLX_BLAKE2_FLAG_OUTDATED_WORKAROUNDS "Emit compiler errors for workarounds which are active, but haven't been validated for this version" OFF)
 
+option(DPLX_BLAKE2_WITH_LIBB2_COMPAT "Provide a libb2 API compatibility layer" ON)
+
+# architecture lists for which to enable assembly / SIMD sources
+set(AMD64_NAMES amd64 AMD64 x86_64)
+set(X86_NAMES i686 x86 X86)
+set(ARMv8_NAMES aarch64 AArch64 arm64 ARM64 armv8 armv8a)
+
+set(IMPLEMENTATIONS GENERIC SSE2 SSE41 AVX NEON)
+
+# default SIMD compiler flag configuration; you can override the cache variables
+# (without "_INIT") defined further below if needed.
+if (MSVC)
+
+    set(DPLX_BLAKE2_CFLAGS_SSE2_INIT  "/arch:SSE2")
+    # MSVC has no dedicated sse4.1 flag (see https://learn.microsoft.com/en-us/cpp/build/reference/arch-x86?view=msvc-170)
+    set(DPLX_BLAKE2_CFLAGS_SSE41_INIT "/arch:SSE4.2")
+    set(DPLX_BLAKE2_CFLAGS_NEON_INIT  "/arch:AVX")
+
+elseif (CMAKE_C_COMPILER_ID STREQUAL "GNU"
+        OR CMAKE_C_COMPILER_ID STREQUAL "Clang"
+        OR CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+
+    set(DPLX_BLAKE2_CFLAGS_SSE2_INIT  "-msse2")
+    set(DPLX_BLAKE2_CFLAGS_SSE41_INIT "-msse4.1")
+    set(DPLX_BLAKE2_CFLAGS_AVX_INIT   "-mavx")
+    # 32-bit ARMv8 needs NEON to be enabled explicitly
+    if (CMAKE_SIZEOF_VOID_P LESS "8")
+        set(DPLX_BLAKE2_CFLAGS_NEON_INIT "-mfpu=neon")
+    else()
+        set(DPLX_BLAKE2_CFLAGS_NEON_INIT "")
+    endif()
+
+endif()
+
+if (CMAKE_C_COMPILER_ARCHITECTURE_ID)
+    set(ARCHITECTURE_ID "${CMAKE_C_COMPILER_ARCHITECTURE_ID}")
+
+else()
+    set(ARCHITECTURE_ID "${CMAKE_SYSTEM_PROCESSOR}")
+
+endif()
+message(STATUS "BLAKE2 arch detected: ${ARCHITECTURE_ID}")
+
+set(DPLX_BLAKE2_WITH_GENERIC ON CACHE BOOL "compile & include the generic implementation")
+if (ARCHITECTURE_ID IN_LIST AMD64_NAMES
+    OR ARCHITECTURE_ID IN_LIST X86_NAMES)
+    message(STATUS "BLAKE2 applying x86 defaults")
+
+    set(DPLX_BLAKE2_CFLAGS_SSE2  "${DPLX_BLAKE2_CFLAGS_SSE2_INIT}"  CACHE STRING "the compiler flags to enable SSE2")
+    set(DPLX_BLAKE2_CFLAGS_SSE41 "${DPLX_BLAKE2_CFLAGS_SSE41_INIT}" CACHE STRING "the compiler flags to enable SSE4.1")
+    set(DPLX_BLAKE2_CFLAGS_AVX   "${DPLX_BLAKE2_CFLAGS_AVX_INIT}"   CACHE STRING "the compiler flags to enable AVX")
+
+    set(DPLX_BLAKE2_WITH_SSE2 ON CACHE BOOL "compile & include the SSE2 implementation")
+    set(DPLX_BLAKE2_WITH_SSE41 ON CACHE BOOL "compile & include the SSE4.1 implementation")
+    set(DPLX_BLAKE2_WITH_AVX ON CACHE BOOL "compile & include the SSE4.1 implementation in AVX mode (using the VEX prefix)")
+
+elseif (ARCHITECTURE_ID IN_LIST ARMv8_NAMES)
+    message(STATUS "BLAKE2 applying ARMv8 defaults")
+
+    set(DPLX_BLAKE2_CFLAGS_NEON "${DPLX_BLAKE2_CFLAGS_NEON_INIT}" CACHE STRING "the compiler flags to enable NEON")
+    set(DPLX_BLAKE2_WITH_NEON OFF CACHE BOOL "compile & include the NEON implementation")
+
+endif()
+mark_as_advanced(DPLX_BLAKE2_CFLAGS_SSE2 DPLX_BLAKE2_CFLAGS_SSE41 DPLX_BLAKE2_CFLAGS_AVX DPLX_BLAKE2_CFLAGS_NEON)
+
+foreach (IMPL IN LISTS IMPLEMENTATIONS)
+    if (DPLX_BLAKE2_WITH_${IMPL})
+        list(APPEND ACTIVE_IMPLEMENTATIONS ${IMPL})
+    endif()
+endforeach()
+
+list(LENGTH ACTIVE_IMPLEMENTATIONS NUM_ACTIVE_IMPLEMENTATIONS)
+list(TRANSFORM ACTIVE_IMPLEMENTATIONS TOLOWER OUTPUT_VARIABLE ACTIVE_IMPLEMENTATION_FILE_PARTS)
+if (NUM_ACTIVE_IMPLEMENTATIONS LESS "1")
+    message(FATAL_ERROR "at least one implemenation must be compiled & included")
+
+elseif (NUM_ACTIVE_IMPLEMENTATIONS EQUAL "1")
+    set(DPLX_BLAKE2_NO_DISPATCH ON)
+
+else()
+    set(DPLX_BLAKE2_NO_DISPATCH OFF)
+endif()
+
+
 ########################################################################
 # dependencies
 
@@ -55,7 +140,7 @@ set_package_properties(Catch2 PROPERTIES
     TYPE OPTIONAL
     PURPOSE "Allows to build the test suite"
 )
-cmake_dependent_option(BUILD_TESTING "Build the documentation using sphinx" ON Catch2_FOUND OFF)
+cmake_dependent_option(BUILD_TESTING "Build the documentation using sphinx" OFF Catch2_FOUND OFF)
 
 find_package(Sphinx)
 set_package_properties(Sphinx PROPERTIES
@@ -67,11 +152,12 @@ cmake_dependent_option(BUILD_DOCS "Build the documentation using sphinx" ON Sphi
 
 ########################################################################
 # warning configuration
-include(CompilerWarnings)
+#include(CompilerWarnings)
 
 
 ########################################################################
 # additional compiler options
+set(CMAKE_C_EXTENSIONS OFF CACHE STRING "" FORCE)
 set(CMAKE_CXX_EXTENSIONS OFF CACHE STRING "" FORCE)
 
 add_library(compiler_settings INTERFACE)
@@ -80,7 +166,7 @@ set_target_properties(compiler_settings PROPERTIES
     EXPORT_NAME libb2-reforged_compiler_settings
 )
 
-target_compile_features(compiler_settings INTERFACE cxx_std_20)
+target_compile_features(compiler_settings INTERFACE cxx_std_20 c_std_17)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(compiler_settings INTERFACE
         /utf-8 # all sources are utf-8 encoded
@@ -93,6 +179,11 @@ endif()
 # library
 add_library(libb2-reforged)
 add_library(Deeplex::libb2-reforged ALIAS libb2-reforged)
+set_target_properties(libb2-reforged PROPERTIES
+    PREFIX ""
+    VERSION ${libb2-reforged_VERSION_MAJOR}.${libb2-reforged_VERSION_MINOR}.${libb2-reforged_VERSION_PATCH}
+    SOVERSION 0
+)
 
 target_link_libraries(libb2-reforged PUBLIC Deeplex::libb2-reforged_compiler_settings)
 
@@ -139,12 +230,19 @@ install(DIRECTORY src/dplx
     TYPE INCLUDE
     FILES_MATCHING
     REGEX ".*\\.h(pp)?"
+    PATTERN "detail/*.h" EXCLUDE
 )
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generated/src/dplx
     TYPE INCLUDE
     FILES_MATCHING
     REGEX ".*\\.h(pp)?"
 )
+if (DPLX_BLAKE2_WITH_LIBB2_COMPAT)
+    install(FILES
+            src/blake2.h
+        TYPE INCLUDE
+    )
+endif()
 
 install(TARGETS libb2-reforged compiler_settings EXPORT libb2-reforged-targets)
 install(EXPORT libb2-reforged-targets
