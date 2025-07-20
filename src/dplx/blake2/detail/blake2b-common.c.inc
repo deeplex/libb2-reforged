@@ -19,7 +19,24 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
+#if DPLX_BLAKE2_NO_DISPATCH
+#define DPLX_CAT2(a, b) a ## b
+#define X_DPLX_API_DEF(name) DPLX_CAT2(dplx_, name)
+#else
+#define DPLX_CAT4(a, b, c, d) a ## b ## c ## d
+#define X_DPLX_API_DEF_CAT(name, suffix) DPLX_CAT4(dplx_, name, _, suffix)
+#define X_DPLX_API_DEF(name) X_DPLX_API_DEF_CAT(name, DPLX_BLAKE2_IMPL_NAME)
+#endif
+
+#define blake2b_init X_DPLX_API_DEF(blake2b_init)
+#define blake2b_init_key X_DPLX_API_DEF(blake2b_init_key)
+#define blake2b_init_param X_DPLX_API_DEF(blake2b_init_param)
+#define blake2b_update X_DPLX_API_DEF(blake2b_update)
+#define blake2b_final X_DPLX_API_DEF(blake2b_final)
+#define blake2b X_DPLX_API_DEF(blake2b)
+
 static void blake2b_compress( blake2b_state *S, const uint8_t block[BLAKE2B_BLOCKBYTES] );
+int blake2b_update( blake2b_state *S, const void *pin, size_t inlen );
 
 static const uint64_t blake2b_IV[8] =
 {
@@ -210,8 +227,4 @@ int blake2b( void *out, size_t outlen, const void *in, size_t inlen, const void 
   blake2b_update( S, ( const uint8_t * )in, inlen );
   blake2b_final( S, out, outlen );
   return 0;
-}
-
-int blake2( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen ) {
-  return blake2b(out, outlen, in, inlen, key, keylen);
 }

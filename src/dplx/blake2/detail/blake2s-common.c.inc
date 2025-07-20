@@ -19,7 +19,24 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
+#if DPLX_BLAKE2_NO_DISPATCH
+#define DPLX_CAT2(a, b) a ## b
+#define X_DPLX_API_DEF(name) DPLX_CAT2(dplx_, name)
+#else
+#define DPLX_CAT4(a, b, c, d) a ## b ## c ## d
+#define X_DPLX_API_DEF_CAT(name, suffix) DPLX_CAT4(dplx_, name, _, suffix)
+#define X_DPLX_API_DEF(name) X_DPLX_API_DEF_CAT(name, DPLX_BLAKE2_IMPL_NAME)
+#endif
+
+#define blake2s_init X_DPLX_API_DEF(blake2s_init)
+#define blake2s_init_key X_DPLX_API_DEF(blake2s_init_key)
+#define blake2s_init_param X_DPLX_API_DEF(blake2s_init_param)
+#define blake2s_update X_DPLX_API_DEF(blake2s_update)
+#define blake2s_final X_DPLX_API_DEF(blake2s_final)
+#define blake2s X_DPLX_API_DEF(blake2s)
+
 static void blake2s_compress( blake2s_state *S, const uint8_t in[BLAKE2S_BLOCKBYTES] );
+int blake2s_update( blake2s_state *S, const void *pin, size_t inlen );
 
 static const uint32_t blake2s_IV[8] =
 {

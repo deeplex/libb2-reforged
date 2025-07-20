@@ -23,6 +23,19 @@
 #include "blake2.h"
 #include "blake2-impl.h"
 
+#define DPLX_CAT2(a, b) a ## b
+#define X_DPLX_API_DEF(name) DPLX_CAT2(dplx_, name)
+
+#define blake2s_init_param X_DPLX_API_DEF(blake2s_init_param)
+#define blake2s_update X_DPLX_API_DEF(blake2s_update)
+#define blake2s_final X_DPLX_API_DEF(blake2s_final)
+
+#define blake2xs_init X_DPLX_API_DEF(blake2xs_init)
+#define blake2xs_init_key X_DPLX_API_DEF(blake2xs_init_key)
+#define blake2xs_update X_DPLX_API_DEF(blake2xs_update)
+#define blake2xs_final X_DPLX_API_DEF(blake2xs_final)
+#define blake2xs X_DPLX_API_DEF(blake2xs)
+
 int blake2xs_init( blake2xs_state *S, const size_t outlen ) {
   return blake2xs_init_key(S, outlen, NULL, 0);
 }
