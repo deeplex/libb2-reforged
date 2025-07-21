@@ -17,7 +17,11 @@
 
 #include <stddef.h>
 #include <stdint.h>
+
+#if !defined(__cplusplus) && __STDC_VERSION__ < 202311l
 #include <assert.h>
+#include <stdbool.h>
+#endif
 
 #if defined(_MSC_VER)
 #define DPLX_BLAKE2_PACKED(x) __pragma(pack(push, 1)) x __pragma(pack(pop))
@@ -150,6 +154,20 @@ extern "C" {
 
   int dplx_blake2xs( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
   int dplx_blake2xb( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+
+  enum dplx_blake2_implementation_id
+  {
+    DPLX_BLAKE2_IMPL_FALLBACK,
+    DPLX_BLAKE2_IMPL_GENERIC,
+    DPLX_BLAKE2_IMPL_NEON,
+    DPLX_BLAKE2_IMPL_SSE2,
+    DPLX_BLAKE2_IMPL_SSE41,
+    DPLX_BLAKE2_IMPL_AVX,
+  };
+
+  int dplx_blake2_choose_implementation( void );
+  int dplx_blake2_use_implementation( enum dplx_blake2_implementation_id which );
+  bool dplx_blake2_has_implementation( enum dplx_blake2_implementation_id which );
 
 #if defined(__cplusplus)
 }

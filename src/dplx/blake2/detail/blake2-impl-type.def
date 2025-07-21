@@ -1,0 +1,15 @@
+#if X_MODE ^ DPLX_BLAKE2_DISPATCH_generic
+X(generic, GENERIC)
+#endif
+#if X_MODE ^ DPLX_BLAKE2_DISPATCH_neon
+X(neon, NEON)
+#endif
+#if X_MODE ^ DPLX_BLAKE2_DISPATCH_sse2
+X(sse2, SSE2)
+#endif
+#if X_MODE ^ DPLX_BLAKE2_DISPATCH_sse41
+X(sse41, SSE41)
+#endif
+#if X_MODE ^ DPLX_BLAKE2_DISPATCH_avx
+X(avx, AVX)
+#endif

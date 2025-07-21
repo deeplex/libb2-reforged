@@ -31,6 +31,38 @@ target_sources(libb2-reforged
         src/dplx/blake2/detail/blake2xb-generic.c
         src/dplx/blake2/detail/blake2xs-generic.c
 )
+
+set(DISPATCH_DEFS "")
+foreach (IMPL IN LISTS IMPLEMENTATIONS)
+    string(TOLOWER "${IMPL}" IMPL_NAME)
+    list(APPEND DISPATCH_DEFS "DPLX_BLAKE2_DISPATCH_${IMPL_NAME}=$<IN_LIST:${IMPL},${ACTIVE_IMPLEMENTATIONS}>")
+endforeach()
+if (DPLX_BLAKE2_NO_DISPATCH)
+    target_sources(libb2-reforged
+        PRIVATE
+            src/dplx/blake2/detail/blake2-dispatch-stub.c
+    )
+    set_source_files_properties(
+            src/dplx/blake2/detail/blake2-dispatch-stub.c
+
+        PROPERTIES
+            COMPILE_DEFINITIONS "${DISPATCH_DEFS}"
+    )
+
+else()
+    target_sources(libb2-reforged
+        PRIVATE
+            src/dplx/blake2/detail/blake2-dispatch.c
+    )
+    set_source_files_properties(
+            src/dplx/blake2/detail/blake2-dispatch.c
+
+        PROPERTIES
+            COMPILE_FLAGS "$<$<IN_LIST:AVX,${ACTIVE_IMPLEMENTATIONS}>:${DPLX_BLAKE2_CFLAGS_XSAVE}>"
+            COMPILE_DEFINITIONS "${DISPATCH_DEFS}"
+    )
+
+endif()
 if ("SSE2" IN_LIST ACTIVE_IMPLEMENTATIONS
     OR "SSE41" IN_LIST ACTIVE_IMPLEMENTATIONS
     OR "AVX" IN_LIST ACTIVE_IMPLEMENTATIONS)
