@@ -186,18 +186,18 @@
             }
         },
         {
-            "name": "x64-linux-gcc-13",
+            "name": "x64-linux-gcc-14",
             "inherits": [
                 "x64-linux-gcc"
             ],
             "cacheVariables": {
-                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/tools/toolchains/x64-linux-gcc-13.cmake"
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/tools/toolchains/x64-linux-gcc-14.cmake"
             }
         },
         {
             "name": "x64-linux-gcc-ci",
             "inherits": [
-                "x64-linux-gcc-13"
+                "x64-linux-gcc-14"
             ]
         },
         {
