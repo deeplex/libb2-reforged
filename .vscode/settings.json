@@ -1,5 +1,7 @@
 {
     "files.associations": {
+        "*.inc": "c",
+        "*.h": "c",
         "*.ipp": "cpp",
         "algorithm": "cpp",
         "any": "cpp",
