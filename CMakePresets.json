@@ -80,6 +80,7 @@
             "cacheVariables": {
                 "CMAKE_DEBUG_POSTFIX": "-ClangDebug",
                 "CMAKE_RELWITHDEBINFO_POSTFIX": "-Clang",
+                "CMAKE_C_COMPILER": "clang-cl",
                 "CMAKE_CXX_COMPILER": "clang-cl"
             },
             "vendor": {
