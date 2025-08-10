@@ -68,9 +68,9 @@ if(MSVC)
 
     if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang") # clang-cl
         add_compile_options(
-            -Wno-delete-non-abstract-non-virtual-dtor
-            -Wmissing-declarations
-            -Wredundant-decls
+            /clang:Wno-delete-non-abstract-non-virtual-dtor
+            /clang:Wmissing-declarations
+            /clang:Wredundant-decls
         )
     endif()
 elseif(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
