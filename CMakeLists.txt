@@ -142,7 +142,12 @@ set_package_properties(Catch2 PROPERTIES
     TYPE OPTIONAL
     PURPOSE "Allows to build the test suite"
 )
-cmake_dependent_option(BUILD_TESTING "Build the documentation using sphinx" OFF Catch2_FOUND OFF)
+find_package(nlohmann_json CONFIG)
+set_package_properties(nlohmann_json PROPERTIES
+    TYPE OPTIONAL
+    PURPOSE "Allows building the test suite (reading the kat json)"
+)
+cmake_dependent_option(BUILD_TESTING "Build the documentation using sphinx" OFF "(Catch2_FOUND AND nlohmann_json_FOUND)" OFF)
 
 find_package(Sphinx)
 set_package_properties(Sphinx PROPERTIES
@@ -201,9 +206,11 @@ if (BUILD_TESTING)
     add_executable(libb2-reforged-tests)
     source_group(TREE blake2_tests PREFIX test_utils)
 
+    target_compile_features(libb2-reforged-tests PUBLIC cxx_std_23)
     target_link_libraries(libb2-reforged-tests PRIVATE
         Deeplex::libb2-reforged
 
+        nlohmann_json::nlohmann_json
         Catch2::Catch2 Catch2::Catch2WithMain
     )
 
@@ -211,7 +218,8 @@ if (BUILD_TESTING)
         src/blake2_tests
     )
 
-    add_test(NAME libb2-reforged-tests COMMAND libb2-reforged-tests)
+    add_test(NAME libb2-reforged-tests COMMAND libb2-reforged-tests
+             WORKING_DIRECTORY $<TARGET_FILE_DIR:libb2-reforged-tests>)
 endif()
 
 ########################################################################

@@ -119,5 +119,16 @@ if (BUILD_TESTING)
 
         PRIVATE
             test_utils.hpp
+
+            hex_decode.hpp
+            hex_encode.hpp
+            kat_json_generator.hpp
     )
+
+    dplx_target_data(libb2-reforged-tests
+        SOURCE_DIR .
+
+        FILES
+            blake2-kat.json
+        )
 endif ()
