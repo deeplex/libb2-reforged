@@ -165,6 +165,7 @@ extern "C" {
     DPLX_BLAKE2_IMPL_SSE2,
     DPLX_BLAKE2_IMPL_SSE41,
     DPLX_BLAKE2_IMPL_AVX,
+    DPLX_BLAKE2_IMPL_COUNT,
   };
 
   DPLX_BLAKE2_EXPORT int dplx_blake2_choose_implementation( void );

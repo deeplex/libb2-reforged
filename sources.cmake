@@ -126,6 +126,7 @@ if (BUILD_TESTING)
 
             hex_decode.hpp
             hex_encode.hpp
+            impl_id_generator.hpp
             kat_json_generator.hpp
     )
 

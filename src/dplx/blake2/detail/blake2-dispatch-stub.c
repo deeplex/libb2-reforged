@@ -17,14 +17,15 @@ int dplx_blake2_choose_implementation( void )
 {
     return 0;
 }
-#define X(l, u) return DPLX_BLAKE2_IMPL_##u == which || DPLX_BLAKE2_IMPL_FALLBACK == which;
+#define X(l, u) return DPLX_BLAKE2_IMPL_##u == which || DPLX_BLAKE2_IMPL_FALLBACK == which ? 0 : -1;
 int dplx_blake2_use_implementation( enum dplx_blake2_implementation_id which )
 {
 #include "blake2-impl-type.def"
 }
+#undef X
+#define X(l, u) return DPLX_BLAKE2_IMPL_##u == which || DPLX_BLAKE2_IMPL_FALLBACK == which;
 bool dplx_blake2_has_implementation( enum dplx_blake2_implementation_id which )
 {
-    // NOLINTNEXTLINE(readability-duplicate-include)
 #include "blake2-impl-type.def"
 }
 #undef X
