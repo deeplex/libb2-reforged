@@ -45,6 +45,8 @@ endif()
 ########################################################################
 # options
 
+option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
+
 option(DPLX_BLAKE2_WITH_LIBB2_COMPAT "Provide a libb2 API compatibility layer" ON)
 
 # architecture lists for which to enable assembly / SIMD sources
@@ -191,6 +193,10 @@ set_target_properties(libb2-reforged PROPERTIES
 
 target_link_libraries(libb2-reforged PUBLIC Deeplex::libb2-reforged_compiler_settings)
 
+target_compile_definitions(libb2-reforged
+    PRIVATE
+        DPLX_BLAKE2_EXPORTS=1
+)
 target_include_directories(libb2-reforged PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated/src>

@@ -11,3 +11,28 @@
 #if __has_include(<dplx/blake2/detail/config.hpp>)
 #include <dplx/blake2/detail/config.hpp>
 #endif
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+#define DPLX_BLAKE2_DLL_IMPORT __declspec(dllimport)
+#define DPLX_BLAKE2_DLL_EXPORT __declspec(dllexport)
+#define DPLX_BLAKE2_DLL_PRIVATE
+#elif __GNUC__ >= 4
+#define DPLX_BLAKE2_DLL_IMPORT  __attribute__((visibility("default")))
+#define DPLX_BLAKE2_DLL_EXPORT  __attribute__((visibility("default")))
+#define DPLX_BLAKE2_DLL_PRIVATE __attribute__((visibility("hidden")))
+#else
+#define DPLX_BLAKE2_DLL_IMPORT
+#define DPLX_BLAKE2_DLL_EXPORT
+#define DPLX_BLAKE2_DLL_PRIVATE
+#endif
+
+#if defined(DPLX_BLAKE2_STATIC_DEFINE)
+#define DPLX_BLAKE2_EXPORT
+#define DPLX_BLAKE2_NO_EXPORT
+#elif DPLX_BLAKE2_EXPORTS
+#define DPLX_BLAKE2_EXPORT DPLX_BLAKE2_DLL_EXPORT
+#define DPLX_BLAKE2_NO_EXPORT DPLX_BLAKE2_DLL_PRIVATE
+#else
+#define DPLX_BLAKE2_EXPORT DPLX_BLAKE2_DLL_IMPORT
+#define DPLX_BLAKE2_NO_EXPORT DPLX_BLAKE2_DLL_PRIVATE
+#endif

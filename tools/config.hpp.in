@@ -11,6 +11,8 @@
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
 // NOLINTBEGIN(cppcoreguidelines-macro-to-enum)
 
+#cmakedefine DPLX_BLAKE2_STATIC_DEFINE
+
 #cmakedefine01 DPLX_BLAKE2_WITH_LIBB2_COMPAT
 
 // NOLINTEND(cppcoreguidelines-macro-to-enum)

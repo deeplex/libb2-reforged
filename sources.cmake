@@ -16,6 +16,11 @@ dplx_target_sources(libb2-reforged
         blake2/config
 )
 
+if (BUILD_SHARED_LIBS)
+    set(DPLX_BLAKE2_STATIC_DEFINE OFF)
+else()
+    set(DPLX_BLAKE2_STATIC_DEFINE ON)
+endif()
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generated/src/dplx/blake2/detail")
 configure_file(tools/config.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/generated/src/dplx/blake2/detail/config.hpp" @ONLY)
 target_sources(libb2-reforged PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated/src/dplx/blake2/detail/config.hpp>)
