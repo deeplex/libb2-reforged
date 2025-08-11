@@ -94,6 +94,30 @@ jobs:
           CXX: ''
           VCPKG_BINARY_SOURCES: "clear;files,${{ steps.vcpkg-cache.outputs.path }},readwrite"
 
+      - name: Build ${{ matrix.triplet }}-${{ matrix.compiler }}-ci shared preset
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: ${{ matrix.triplet }}-${{ matrix.compiler }}-ci
+          configurePresetAdditionalArgs: "[ '-DBUILD_SHARED_LIBS=ON' ]"
+          buildPreset: ${{ matrix.triplet }}-${{ matrix.compiler }}-ci
+          testPreset: ${{ matrix.triplet }}-${{ matrix.compiler }}-ci
+        env:
+          CC: ''
+          CXX: ''
+          VCPKG_BINARY_SOURCES: "clear;files,${{ steps.vcpkg-cache.outputs.path }},readwrite"
+
+      - name: Build ${{ matrix.triplet }}-${{ matrix.compiler }}-ci-release shared preset
+        uses: lukka/run-cmake@v10
+        with:
+          configurePreset: ${{ matrix.triplet }}-${{ matrix.compiler }}-ci
+          configurePresetAdditionalArgs: "[ '-DBUILD_SHARED_LIBS=ON' ]"
+          buildPreset: ${{ matrix.triplet }}-${{ matrix.compiler }}-ci-release
+          testPreset: ${{ matrix.triplet }}-${{ matrix.compiler }}-ci-release
+        env:
+          CC: ''
+          CXX: ''
+          VCPKG_BINARY_SOURCES: "clear;files,${{ steps.vcpkg-cache.outputs.path }},readwrite"
+
   check-format:
     name: clang-tidy & clang-format
     runs-on: ubuntu-24.04
