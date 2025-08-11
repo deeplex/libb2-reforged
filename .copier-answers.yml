@@ -8,5 +8,5 @@ header_only: false
 namespace: blake2
 project_name: libb2 Reforged
 project_slug: libb2-reforged
-workaround_header: true
+workaround_header: false
 year: '2025'

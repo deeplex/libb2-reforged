@@ -45,9 +45,6 @@ endif()
 ########################################################################
 # options
 
-option(DPLX_BLAKE2_DISABLE_WORKAROUNDS "Disable all workarounds" OFF)
-option(DPLX_BLAKE2_FLAG_OUTDATED_WORKAROUNDS "Emit compiler errors for workarounds which are active, but haven't been validated for this version" OFF)
-
 option(DPLX_BLAKE2_WITH_LIBB2_COMPAT "Provide a libb2 API compatibility layer" ON)
 
 # architecture lists for which to enable assembly / SIMD sources

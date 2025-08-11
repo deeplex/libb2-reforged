@@ -4,7 +4,6 @@
     "version-semver": "0.0.0-alpha.1",
     "homepage": "https://github.com/deeplex/libb2-reforged",
     "dependencies": [
-        "concrete"
     ],
     "features": {
         "tests": {

@@ -45,17 +45,6 @@ struct b2_known_answer_dto
         return os;
     }
 };
-/*
-void to_json(nlohmann::json &j, b2_known_answer_dto const &k)
-{
-    j = nlohmann::json{
-            {   "variant",    k.variant},
-            {"in", k.in},
-            {    "key",     k.out},
-            {"out", k}
-    };
-}
-*/
 
 void from_json(nlohmann::json const &j, b2_known_answer_dto &p)
 {

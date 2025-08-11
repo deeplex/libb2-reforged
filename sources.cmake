@@ -14,7 +14,6 @@ dplx_target_sources(libb2-reforged
 
     PUBLIC
         blake2/config
-        blake2/detail/workaround
 )
 
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generated/src/dplx/blake2/detail")

@@ -11,11 +11,6 @@
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
 // NOLINTBEGIN(cppcoreguidelines-macro-to-enum)
 
-// #cmakedefine01
-
-#cmakedefine01 DPLX_BLAKE2_DISABLE_WORKAROUNDS
-#cmakedefine01 DPLX_BLAKE2_FLAG_OUTDATED_WORKAROUNDS
-
 // NOLINTEND(cppcoreguidelines-macro-to-enum)
 // NOLINTEND(cppcoreguidelines-macro-usage)
 // NOLINTEND(modernize-macro-to-enum)

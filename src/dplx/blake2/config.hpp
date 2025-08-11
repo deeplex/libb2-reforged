@@ -11,10 +11,3 @@
 #if __has_include(<dplx/blake2/detail/config.hpp>)
 #include <dplx/blake2/detail/config.hpp>
 #endif
-
-#if !defined(DPLX_BLAKE2_DISABLE_WORKAROUNDS)
-#define DPLX_BLAKE2_DISABLE_WORKAROUNDS 0
-#endif
-#if !defined(DPLX_BLAKE2_FLAG_OUTDATED_WORKAROUNDS)
-#define DPLX_BLAKE2_FLAG_OUTDATED_WORKAROUNDS 0
-#endif
