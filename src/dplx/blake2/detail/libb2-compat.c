@@ -1,5 +1,5 @@
 #include <blake2.h>
-#include "dplx/blake2.h"
+#include <dplx/blake2.h>
 
 int blake2s_init( blake2s_state *S, size_t outlen )
 {

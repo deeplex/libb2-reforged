@@ -189,6 +189,8 @@ set_target_properties(libb2-reforged PROPERTIES
     PREFIX ""
     VERSION ${libb2-reforged_VERSION_MAJOR}.${libb2-reforged_VERSION_MINOR}.${libb2-reforged_VERSION_PATCH}
     SOVERSION 0
+    C_VISIBILITY_PRESET hidden
+    CXX_VISIBILITY_PRESET hidden
 )
 
 target_link_libraries(libb2-reforged PUBLIC Deeplex::libb2-reforged_compiler_settings)

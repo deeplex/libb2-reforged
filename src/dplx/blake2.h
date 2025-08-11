@@ -23,6 +23,8 @@
 #include <stdbool.h>
 #endif
 
+#include <dplx/blake2/config.hpp>
+
 #if defined(_MSC_VER)
 #define DPLX_BLAKE2_PACKED(x) __pragma(pack(push, 1)) x __pragma(pack(pop))
 #else
@@ -125,35 +127,35 @@ extern "C" {
 
 
   /* Streaming API */
-  int dplx_blake2s_init( dplx_blake2s_state *S, size_t outlen );
-  int dplx_blake2s_init_key( dplx_blake2s_state *S, size_t outlen, const void *key, size_t keylen );
-  int dplx_blake2s_init_param( dplx_blake2s_state *S, const dplx_blake2s_param *P );
-  int dplx_blake2s_update( dplx_blake2s_state *S, const void *in, size_t inlen );
-  int dplx_blake2s_final( dplx_blake2s_state *S, void *out, size_t outlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2s_init( dplx_blake2s_state *S, size_t outlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2s_init_key( dplx_blake2s_state *S, size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2s_init_param( dplx_blake2s_state *S, const dplx_blake2s_param *P );
+  DPLX_BLAKE2_EXPORT int dplx_blake2s_update( dplx_blake2s_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2s_final( dplx_blake2s_state *S, void *out, size_t outlen );
 
-  int dplx_blake2b_init( dplx_blake2b_state *S, size_t outlen );
-  int dplx_blake2b_init_key( dplx_blake2b_state *S, size_t outlen, const void *key, size_t keylen );
-  int dplx_blake2b_init_param( dplx_blake2b_state *S, const dplx_blake2b_param *P );
-  int dplx_blake2b_update( dplx_blake2b_state *S, const void *in, size_t inlen );
-  int dplx_blake2b_final( dplx_blake2b_state *S, void *out, size_t outlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2b_init( dplx_blake2b_state *S, size_t outlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2b_init_key( dplx_blake2b_state *S, size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2b_init_param( dplx_blake2b_state *S, const dplx_blake2b_param *P );
+  DPLX_BLAKE2_EXPORT int dplx_blake2b_update( dplx_blake2b_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2b_final( dplx_blake2b_state *S, void *out, size_t outlen );
 
   /* Variable output length API */
-  int dplx_blake2xs_init( dplx_blake2xs_state *S, const size_t outlen );
-  int dplx_blake2xs_init_key( dplx_blake2xs_state *S, const size_t outlen, const void *key, size_t keylen );
-  int dplx_blake2xs_update( dplx_blake2xs_state *S, const void *in, size_t inlen );
-  int dplx_blake2xs_final(dplx_blake2xs_state *S, void *out, size_t outlen);
+  DPLX_BLAKE2_EXPORT int dplx_blake2xs_init( dplx_blake2xs_state *S, const size_t outlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xs_init_key( dplx_blake2xs_state *S, const size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xs_update( dplx_blake2xs_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xs_final(dplx_blake2xs_state *S, void *out, size_t outlen);
 
-  int dplx_blake2xb_init( dplx_blake2xb_state *S, const size_t outlen );
-  int dplx_blake2xb_init_key( dplx_blake2xb_state *S, const size_t outlen, const void *key, size_t keylen );
-  int dplx_blake2xb_update( dplx_blake2xb_state *S, const void *in, size_t inlen );
-  int dplx_blake2xb_final(dplx_blake2xb_state *S, void *out, size_t outlen);
+  DPLX_BLAKE2_EXPORT int dplx_blake2xb_init( dplx_blake2xb_state *S, const size_t outlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xb_init_key( dplx_blake2xb_state *S, const size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xb_update( dplx_blake2xb_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xb_final(dplx_blake2xb_state *S, void *out, size_t outlen);
 
   /* Simple API */
-  int dplx_blake2s( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
-  int dplx_blake2b( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2s( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2b( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
 
-  int dplx_blake2xs( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
-  int dplx_blake2xb( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xs( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int dplx_blake2xb( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
 
   enum dplx_blake2_implementation_id
   {
@@ -165,9 +167,9 @@ extern "C" {
     DPLX_BLAKE2_IMPL_AVX,
   };
 
-  int dplx_blake2_choose_implementation( void );
-  int dplx_blake2_use_implementation( enum dplx_blake2_implementation_id which );
-  bool dplx_blake2_has_implementation( enum dplx_blake2_implementation_id which );
+  DPLX_BLAKE2_EXPORT int dplx_blake2_choose_implementation( void );
+  DPLX_BLAKE2_EXPORT int dplx_blake2_use_implementation( enum dplx_blake2_implementation_id which );
+  DPLX_BLAKE2_EXPORT bool dplx_blake2_has_implementation( enum dplx_blake2_implementation_id which );
 
 #if defined(__cplusplus)
 }

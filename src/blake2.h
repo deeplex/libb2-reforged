@@ -52,35 +52,35 @@ extern "C" {
   typedef struct dplx_blake2xb_state blake2xb_state;
 
   /* Streaming API */
-  int blake2s_init( blake2s_state *S, size_t outlen );
-  int blake2s_init_key( blake2s_state *S, size_t outlen, const void *key, size_t keylen );
-  int blake2s_init_param( blake2s_state *S, const blake2s_param *P );
-  int blake2s_update( blake2s_state *S, const void *in, size_t inlen );
-  int blake2s_final( blake2s_state *S, void *out, size_t outlen );
+  DPLX_BLAKE2_EXPORT int blake2s_init( blake2s_state *S, size_t outlen );
+  DPLX_BLAKE2_EXPORT int blake2s_init_key( blake2s_state *S, size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2s_init_param( blake2s_state *S, const blake2s_param *P );
+  DPLX_BLAKE2_EXPORT int blake2s_update( blake2s_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int blake2s_final( blake2s_state *S, void *out, size_t outlen );
 
-  int blake2b_init( blake2b_state *S, size_t outlen );
-  int blake2b_init_key( blake2b_state *S, size_t outlen, const void *key, size_t keylen );
-  int blake2b_init_param( blake2b_state *S, const blake2b_param *P );
-  int blake2b_update( blake2b_state *S, const void *in, size_t inlen );
-  int blake2b_final( blake2b_state *S, void *out, size_t outlen );
+  DPLX_BLAKE2_EXPORT int blake2b_init( blake2b_state *S, size_t outlen );
+  DPLX_BLAKE2_EXPORT int blake2b_init_key( blake2b_state *S, size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2b_init_param( blake2b_state *S, const blake2b_param *P );
+  DPLX_BLAKE2_EXPORT int blake2b_update( blake2b_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int blake2b_final( blake2b_state *S, void *out, size_t outlen );
 
   /* Variable output length API */
-  int blake2xs_init( blake2xs_state *S, const size_t outlen );
-  int blake2xs_init_key( blake2xs_state *S, const size_t outlen, const void *key, size_t keylen );
-  int blake2xs_update( blake2xs_state *S, const void *in, size_t inlen );
-  int blake2xs_final(blake2xs_state *S, void *out, size_t outlen);
+  DPLX_BLAKE2_EXPORT int blake2xs_init( blake2xs_state *S, const size_t outlen );
+  DPLX_BLAKE2_EXPORT int blake2xs_init_key( blake2xs_state *S, const size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2xs_update( blake2xs_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int blake2xs_final(blake2xs_state *S, void *out, size_t outlen);
 
-  int blake2xb_init( blake2xb_state *S, const size_t outlen );
-  int blake2xb_init_key( blake2xb_state *S, const size_t outlen, const void *key, size_t keylen );
-  int blake2xb_update( blake2xb_state *S, const void *in, size_t inlen );
-  int blake2xb_final(blake2xb_state *S, void *out, size_t outlen);
+  DPLX_BLAKE2_EXPORT int blake2xb_init( blake2xb_state *S, const size_t outlen );
+  DPLX_BLAKE2_EXPORT int blake2xb_init_key( blake2xb_state *S, const size_t outlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2xb_update( blake2xb_state *S, const void *in, size_t inlen );
+  DPLX_BLAKE2_EXPORT int blake2xb_final(blake2xb_state *S, void *out, size_t outlen);
 
   /* Simple API */
-  int blake2s( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
-  int blake2b( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2s( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2b( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
 
-  int blake2xs( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
-  int blake2xb( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2xs( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
+  DPLX_BLAKE2_EXPORT int blake2xb( void *out, size_t outlen, const void *in, size_t inlen, const void *key, size_t keylen );
 
 #if defined(__cplusplus)
 }
